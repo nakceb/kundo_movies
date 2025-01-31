@@ -1,0 +1,24 @@
+# Automatisera testning.
+
+image: python:latest
+
+before_script:
+  - python --version ; pip --version  # For debugging
+  - pip install virtualenv
+  - virtualenv venv
+  - source venv/bin/activate
+
+test:
+  stage: test
+  script:
+    - pip install pytest
+    - pip install --editable ".[test]"
+    - pytest .
+
+push_pypi:
+  stage: deploy
+  script:
+    - pip install twine
+    - twine upload
+  only:
+    - main
