@@ -6,11 +6,14 @@ build-backend = "hatchling.build"
 name = "kundo_movies"
 version = "0.0.1"
 authors = [
-  { name="Author", email="author@example.com" },
+  { name="filip", email="filip.pontus.stenbeck@gmail.com" },
 ]
 
 dependencies = [  # Få med dependencies (istället för requirment.txt)
-  "fastapi",
+    "fastapi[standard]",
+    "uvicorn[standard]",
+    "requests",
+    "jinja2"
 ]
 
 description = "Kundo movies demo application"

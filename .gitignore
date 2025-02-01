@@ -1,1 +1,4 @@
-.api_key.json
+.env
+__pycache__/
+.idea
+*.pyc

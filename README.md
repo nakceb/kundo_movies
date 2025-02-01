@@ -1,6 +1,26 @@
 # kundo-movies
 Kundo work case for potential job candidates. Let's implement a mini webapp!
 
+## Install:
+``` python
+# Create venv / conda env
+pip install .
+
+# Create a .env file and add optional OMBD-API-Key, we are loading it in as a environment variable
+touch .env
+
+# nano .env
+OMDB_API_KEY=<enter your key>
+```
+
+## Run application
+``` bash 
+cd public 
+uvicorn main:app --reload
+
+# Open browser at localhost:8000
+```
+
 ## The Task
 
 Together we will build a tiny competitor to IMDB, by using an existing

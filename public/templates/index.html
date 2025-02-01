@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Kundo Movies</title>
+  <link href="{{ url_for('static', path='/css/styles.css') }}" rel="stylesheet">
+  <script src="{{ url_for('static', path='/js/script.js') }}" defer></script>
+</head>
+<body>
+    <div>
+        <h1>Kundo Movies</h1>
+
+        <form action="/search" method="post">
+            <div>
+                <input type="text"
+                       name="title"
+                       placeholder="Seach movie title"
+                       required>
+                <button type="submit">
+                    Search
+                </button>
+            </div>
+        </form>
+
+        {% if movies %}
+            <div>
+                {% for m in movies %}
+                    <div>
+                        <h3>{{ m.title}} ({{ m.year }})</h3>
+                        {% if m.poster and m.poster != "N/A" %}
+                            <img src="{{ m.poster }}"
+                                 alt="{{ m.title }}({{ m.year }})"
+                                 class="w-48 h-auto rounded">
+                        {% endif %}
+                        {% if selected_movie and selected_movie.title == m.title %}
+                            <div>
+                                <div>
+                                    <h2>{{ selected_movie.title }} ({{ selected_movie.year }})</h2>
+
+                                    {% if selected_movie.rating and selected_movie.rating != "N/A" %}
+                                        <div>
+                                            ★ {{ selected_movie.rating }}/10
+                                        </div>
+                                    {% endif %}
+
+                                    {% if selected_movie.director and selected_movie.director != "N/A" %}
+                                        <p>Director: {{ selected_movie.director }}</p>
+                                    {% endif %}
+
+                                    {% if selected_movie.actors and selected_movie.actors != "N/A" %}
+                                        <p>Cast: {{ selected_movie.actors }}</p>
+                                    {% endif %}
+
+                                    {% if selected_movie.plot and selected_movie.plot != "N/A" %}
+                                        <p>{{ selected_movie.plot }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    <!-- Details form button -->
+                    <form action="/details" method="post">
+                        <input type="hidden" name="title" value="{{ m.title }}">
+                        <input type="hidden" name="movies" value="{{ movies }}">
+                        <button type="submit">
+                            View Details
+                        </button>
+                    </form>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
