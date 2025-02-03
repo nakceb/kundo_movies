@@ -12,7 +12,7 @@ test:
   stage: test
   script:
     - pip install pytest
-    - pip install --editable ".[test]"
+    - pip install .
     - pytest .
 
 push_pypi:

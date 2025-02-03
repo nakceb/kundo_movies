@@ -12,4 +12,6 @@ async def test_detailed_query():
     """
     response = await details("Memento")  # type: JSONResponse
     assert response.status_code == 200
-    assert response.content == "test"
+    data = json.loads(response.body.decode())
+    assert data["Title"] == "Memento"
+    assert "Guy Pearce" in data['Actors']
