@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 import os
-from typing import Tuple
+import logging
 
 
 def load_omdb_api():
@@ -16,6 +16,5 @@ def load_omdb_api():
         url = "http://www.omdbapi.com/"
         return api_key, url
     else:
+        logging.warning("No OMDB_API_KEY set, will used cached data as offline demo.")
         return None, None
-
-load_omdb_api()

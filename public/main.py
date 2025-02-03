@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 import requests
 import json
+import logging
 
-from fastapi import FastAPI, Request, Form
+from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 
 from kundo_movies.utils import load_omdb_api
 
@@ -49,15 +50,21 @@ async def search(request: Request, title: str = Form(...)):
     else:
         movies_data = None
 
-    print(movies_data)
     return templates.TemplateResponse(
         "index.html",
         {"request": request, "movies": movies_data}
     )
 
 
-@app.post("/details", response_class=HTMLResponse)
-async def details(request: Request, title: str = Form(...), movies: str = Form(...)):
+@app.get("/details/{title}", response_class=HTMLResponse)
+async def details(title: str):
+
+    if OMDB_API_KEY is None:
+        # TODO
+        logging.critical("Offline logging not implemented")
+        movie_data = json.loads("../data/details.json")
+        print(movie_data)
+        exit()
     # Make request to OMDb API
     params = {
         "apikey": OMDB_API_KEY,
@@ -67,22 +74,10 @@ async def details(request: Request, title: str = Form(...), movies: str = Form(.
     response = requests.get(OMDB_API_URL, params=params)
     movie_data = response.json()
 
+    print(movie_data)
     # Check if movie was found
     if movie_data.get("Response") == "True":
-        movie = {
-            "title": movie_data.get("Title"),
-            "year": movie_data.get("Year"),
-            "plot": movie_data.get("Plot"),
-            "poster": movie_data.get("Poster"),
-            "director": movie_data.get("Director"),
-            "actors": movie_data.get("Actors"),
-            "rating": movie_data.get("imdbRating")
-        }
+        return JSONResponse(content=movie_data)
     else:
-        movie = None
+        raise HTTPException(status_code=404, detail="Movie not found")
 
-    print(movies)
-    return templates.TemplateResponse(
-        "index.html",
-        {"request": request, "selected_movie": movie, "movies": movies}
-    )
