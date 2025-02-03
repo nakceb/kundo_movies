@@ -15,8 +15,8 @@ OMDB_API_KEY=<enter your key>
 
 ## Run application
 ``` bash 
-cd public 
-uvicorn main:app --reload
+cd src/kundo_movies
+python main.py
 
 # Open browser at localhost:8000
 ```

@@ -13,7 +13,8 @@ dependencies = [  # Få med dependencies (istället för requirment.txt)
     "fastapi[standard]",
     "uvicorn[standard]",
     "requests",
-    "jinja2"
+    "jinja2",
+    "pytest-asyncio"
 ]
 
 description = "Kundo movies demo application"
